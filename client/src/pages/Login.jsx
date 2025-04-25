@@ -10,67 +10,139 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {useState} from "react";
 
 
 const Login = () => {
-  return (
-    <Tabs defaultValue="account" className="w-[400px]">
-      <TabsList className="grid w-full grid-cols-2">
-        <TabsTrigger value="signup">Signup</TabsTrigger>
-        <TabsTrigger value="login">Login</TabsTrigger>
-      </TabsList>
-      <TabsContent value="signup">
-        <Card>
-          <CardHeader>
-            <CardTitle>Signup</CardTitle>
-            <CardDescription>
-              Signup for an account to get started.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="space-y-1">
-              <Label htmlFor="name">Name</Label>
-              <Input id="name" placeholder="Enter your name" />
-            </div>
-            <div className="space-y-1">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" defaultValue="example@sample.com" />
-            </div>
+  // State to manage the input fields for signup and login
+  const [signupInput, setSignupInput] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
 
-            <div className="space-y-1">
-              <Label htmlFor="current">Password</Label>
-              <Input id="password" type="password" />
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Button>Signup</Button>
-          </CardFooter>
-        </Card>
-      </TabsContent>
-      <TabsContent value="login">
-        <Card>
-          <CardHeader>
-            <CardTitle>Login</CardTitle>
-            <CardDescription>
-              Login to your account to get started.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="space-y-1">
-              <Label htmlFor="current">Email</Label>
-              <Input id="current" type="email" />
-            </div>
-            <div className="space-y-1">
-              <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" />
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Button>Login</Button>
-          </CardFooter>
-        </Card>
-      </TabsContent>
-    </Tabs>
+  const [loginInput, setLoginInput] = useState({
+     email: "",
+     password: ""
+ });
+
+ // Function to handle input changes for both signup and login forms
+ 
+ const changeInputHandler =(e,type) => {
+  const { name, value } = e.target;
+  if (type === "signup"){
+    setSignupInput({...signupInput, [name]: value});
+  } else {
+    setLoginInput({...loginInput, [name]: value});
+  }
+    
+  };
+
+  const handleRegistration = (type) => {
+        const inputData = type === "signup" ? signupInput : loginInput;
+        console.log(inputData)
+     
+  }
+
+ 
+  return (
+    <div className=" flex items-center justify-center h-screen bg-cyan-700">
+      <Tabs defaultValue="account" className="w-[400px]">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="signup">Signup</TabsTrigger>
+          <TabsTrigger value="login">Login</TabsTrigger>
+        </TabsList>
+        <TabsContent value="signup">
+          <Card>
+            <CardHeader>
+              <CardTitle>Signup</CardTitle>
+              <CardDescription>
+                Signup for an account to get started.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <div className="space-y-1">
+                <Label htmlFor="name">Name</Label>
+                <Input
+                  type="text"
+                  id="name"
+                  name = "name"
+                  value = {signupInput.name}
+                  placeholder=""
+                  required="true"
+                  onChange = {(e)=> changeInputHandler(e, "signup")}  
+                   />
+              </div>
+              <div className="space-y-1">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  type="email"
+                  id="email"
+                  name ="email"
+                  value = {signupInput.email}
+                  placeholder="example@sample.com"
+                  onChange = {(e)=> changeInputHandler(e, "signup")}  
+                  required="true"
+                  />
+              </div>
+
+              <div className="space-y-1">
+                <Label htmlFor="current">Password</Label>
+                <Input id="password" 
+                type="password"
+                name ="password"
+                value = {signupInput.password}
+                onChange = {(e)=>changeInputHandler(e, "signup")}  
+                required="true"
+                placeholder = "*********" 
+                />
+              </div>
+
+            </CardContent>
+            <CardFooter>
+            <Button onClick={() => handleRegistration("signup")}>Signup</Button>
+            </CardFooter>
+          </Card>
+        </TabsContent>
+        <TabsContent value="login">
+          <Card>
+            <CardHeader>
+              <CardTitle>Login</CardTitle>
+              <CardDescription>
+                Login to your account to get started.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <div className="space-y-1">
+                <Label htmlFor="current">Email</Label>
+                <Input id="current"
+                type="email"
+                name ="email" 
+                value = {loginInput.email}
+                onChange = {(e) => changeInputHandler(e, "login")}
+                placeholder="example@sample.com"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <Label htmlFor="password">Password</Label>
+                <Input 
+                name ="password"
+                id="password" 
+                type="password"
+                value = {loginInput.password}
+                placeholder  = "*********"
+                onChange = {(e) =>changeInputHandler(e, "login")}
+                />
+              </div>
+            </CardContent>
+            <CardFooter>
+            <Button onClick={() => handleRegistration("login")}>Login</Button>
+            </CardFooter>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
   );
 };
 
