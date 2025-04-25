@@ -5,10 +5,33 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-    email:{
+  email:{
+    type: String,
+    required: true,
+    unique: true,
+  },
+  password:{
+    type: String,
+    required: true,
+  },
+  role:{
+    type: String,
+    enum: ["admin", "student","instructor"],
+    default: "student",
+  },
+  enrolledCourses:{
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Course",
+  },
+  photuURL:{
+    type: String,
+    default: "",
+  },
+}, {
+  timestamps: true,
+});
 
-    {
 
-  },{},
+const User = mongoose.model("User", userSchema);  
 
-})
+
