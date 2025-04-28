@@ -53,6 +53,14 @@ export const register = async (req, res) => {
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
+
+      const isPasswordMatch = await bcrypt.compare(password, user.password);
+      if (!isPasswordMatch) {
+        return res.status(401).json({
+          success:false,
+          message: "Invalid Password"
+        });
+      }
     } catch (error) {
       console.error("Error logging in user:", error);
       return res.status(500).json({
