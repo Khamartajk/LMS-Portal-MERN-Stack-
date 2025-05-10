@@ -1,6 +1,6 @@
-import User from "../models/user.model.js";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import {User} from "../models/user.model.js";
+import bcrypt from "bcryptjs";
+import { generateToken } from "../utils/generateTokens.js";
 
 export const register = async (req, res) => {
   try {
@@ -16,23 +16,26 @@ export const register = async (req, res) => {
     if (!email.includes("@")) {
       return res.status(400).json({ message: "Please enter a valid email" });
     }
-    const user = await User.findOne({ email });
-    if (existingUser) {
-      res.status(200).json({ message: "User already exists" });
+    const existingUser = await User.findOne({ email });
+     if (existingUser) {
+      return res.status(400).json({ message: "User already exists" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await User.create({
-      name: name,
-      email: email,
+    const newUser = await User.create({
+      name,
+      email,
       password: hashedPassword,
     });
+
+
     return res.status(201).json({
       success: true,
       message: "User Registered successfully",
-      user,
+      user: newUser,
     });
+
   } catch (error) {
     console.error("Error registering user:", error);
     return res.status(500).json({
@@ -41,8 +44,9 @@ export const register = async (req, res) => {
       error,
     });
   }
+};
 
-  const login = async (req, res) => {
+export  const login = async (req, res) => {
     try {
       const { email, password } = req.body;
       if (!email || !password) {
@@ -61,6 +65,7 @@ export const register = async (req, res) => {
           message: "Invalid Password"
         });
       }
+      generateToken(res,user,`Welcome back  ${user.name}`);
     } catch (error) {
       console.error("Error logging in user:", error);
       return res.status(500).json({
@@ -70,4 +75,4 @@ export const register = async (req, res) => {
       });
     }
   };
-};
+
