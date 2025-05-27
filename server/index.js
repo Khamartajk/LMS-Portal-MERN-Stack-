@@ -19,9 +19,9 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin : "http://localhost:8000",
-  credentials:true
-}))
+  origin: 'http://localhost:5173', // Allow only this origin
+  credentials: true, // If using cookies/auth
+}));
 
 // apis comes here
 app.use("/api/v1/user",userRoutes)

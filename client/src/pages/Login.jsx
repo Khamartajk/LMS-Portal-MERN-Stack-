@@ -59,7 +59,7 @@ const Login = () => {
     }
   };
 
-  const handleRegistration = (type) => {
+  const handleRegistration = async (type) => {
     const inputData = type === "signup" ? signupInput : loginInput;
     // console.log(inputData);
     const action = type === "signup" ? registerUser : loginUser;
@@ -125,11 +125,12 @@ const Login = () => {
                 {
                   registerIsLoading ? (
                     <>
-                      <Loaderx``
+                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />Please Wait
                     </>
-                  )
+                  ) : "Signup"
                 }
                 Signup
+                
               </Button>
             </CardFooter>
           </Card>

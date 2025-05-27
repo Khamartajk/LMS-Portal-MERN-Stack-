@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
     type: [mongoose.Schema.Types.ObjectId],
     ref: "Course",
   },
-  photuURL:{
+  photoURL:{
     type: String,
     default: "",
   },
